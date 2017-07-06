@@ -9,7 +9,7 @@ namespace Optionalform;
 
 class test{
 
-    function get(){
+    function static get_test(){
         echo  __METHOD__.'test' ;
     }
 }
