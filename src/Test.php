@@ -7,9 +7,9 @@ namespace Optionalform;
  * Time: 18:34
  */
 
-class test{
+class Test{
 
-    function get(){
+    public static function pp_test(){
         echo  __METHOD__.'test' ;
     }
 }
