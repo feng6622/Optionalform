@@ -1,4 +1,11 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: zhuxiaofeng
+ * Date: 2017/7/6
+ * Time: 18:34
+ */
+
 namespace Optionalform;
 
 use Illuminate\Database\Schema\Blueprint;
@@ -7,17 +14,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Schema;
 
-/**
- * Created by PhpStorm.
- * User: zhuxiaofeng
- * Date: 2017/7/6
- * Time: 18:34
- *
- *
- */
-class Test
+class ConfForm
 {
-
 
     public static function pp_test()
     {
@@ -27,7 +25,6 @@ class Test
 
     public static function createOptionalForm($dbConfig)
     {
-
         if (!Schema::connection($dbConfig)->hasTable('optional_form')) {
             Schema::connection($dbConfig)->create('optional_form', function (Blueprint $table) {
                 $table->increments('id');// 主键 自增
@@ -48,11 +45,9 @@ class Test
 
     /**
      * @param $data
-    {"title":"报表","sql":"select * from wk_report where id=? and name=? group by ?","select_fields":["name","pv","click","spend"],"show_rules":[{"cpm":"spend*1000","spend":"spend/1000"}]}
      */
     public static function saveForm($data)
     {
-
         if (empty($data)) {
             return;
         }
@@ -63,35 +58,18 @@ class Test
 
         }
 
-
     }
 
     /**
+     * @param $str
+     * @param $params
      *
      * 解析sql 并查询返回数据
+     *
      */
-    public static function analysis()
+    public static function analysis($str, $params)
     {
-        $a=1;
-        print($a);
-        $s = "select wk_plan.name,wk_plan.status from wk_plan join wk_unit on wk_plan.id=wk_unit.plan_id where 1 and (wk_plan.created_at >= {startDate} or wk_plan.created_at <= {endDate}) and ((wk_plan.user_id = {userId}) or (wk_plan.status = {status} and wk_plan.id in ( select id from wk_unit where id={palnId})) ) order by wk_plan.created_at desc limit {pageNo}, {pageSize}";
-        $split = preg_split('/(\bwhere\b|\bgroup\b|\border\b|\blimit\b)/i', $s, -1,
-            PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE);
-        echo"<pre>";
-        print_r($split);
-        echo"</pre>";
-        $t = preg_split('/(\band\b|\bor\b|\b\(\b)/i', $split[2], -1,
-            PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE);
-        echo"<pre>";
-        print_r($t);
-        echo"</pre>";
-
-        $params['startDate'] = "2017-07-01";
-        $params['endDate'] = "2017-07-02";
-        $params['pageSize'] = 50;
-        $params['pageNo'] = 1;
-
-        $str = '{"name":"DSP列表","path":"dsp/list","type":"pageable","sql":"select wk_plan.name,wk_plan.status from wk_plan join wk_unit on wk_plan.id=wk_unit.plan_id where 1 and (wk_plan.created_at >= {startDate} or wk_plan.created_at <= {endDate}) and ((wk_plan.user_id = {userId}) or (wk_plan.status = {status} and wk_plan.id in ({id})) ) order by wk_plan.created_at desc limit {pageNo}, {pageSize}","params":{"startDate":{"type":"string","rules":[["required"],["max","2017-07-12"],["min","2015-08-01"]]},"endDate":{"type":"string","rules":[["required"],["max","2017-07-12"],["min","2015-08-01"]]},"userId":{"type":"string","rules":[]},"status":{"type":"integer","rules":[]},"id":{"type":"integer","rules":[]},"srcId":{"type":"integer","rules":[]},"pageId":{"type":"integer","rules":[]},"dspId":{"type":"integer","rules":[]},"pageSize":{"type":"integer","rules":[["required"]]},"pageNo":{"type":"integer","rules":[["required"]]}}}';
+//        $str = '{"name":"DSP列表","path":"dsp/list","type":"pageable","sql":"select wk_plan.name,wk_plan.status from wk_plan join wk_unit on wk_plan.id=wk_unit.plan_id where 1 and (wk_plan.created_at >= {startDate} or wk_plan.created_at <= {endDate}) and ((wk_plan.user_id = {userId}) or (wk_plan.status = {status} and wk_plan.id in ({id})) ) order by wk_plan.created_at desc limit {pageNo}, {pageSize}","params":{"startDate":{"type":"string","rules":[["required"],["max","2017-07-12"],["min","2015-08-01"]]},"endDate":{"type":"string","rules":[["required"],["max","2017-07-12"],["min","2015-08-01"]]},"userId":{"type":"string","rules":[]},"status":{"type":"integer","rules":[]},"id":{"type":"integer","rules":[]},"srcId":{"type":"integer","rules":[]},"pageId":{"type":"integer","rules":[]},"dspId":{"type":"integer","rules":[]},"pageSize":{"type":"integer","rules":[["required"]]},"pageNo":{"type":"integer","rules":[["required"]]}}}';
         $info = json_decode($str, true);
         if (isset($info['sql'])) {
             $chart_sql = $info['sql'];
@@ -219,4 +197,23 @@ class Test
         return $msg;
     }
 
+
+//$a = 1;
+//print($a);
+//$s = "select wk_plan.name,wk_plan.status from wk_plan join wk_unit on wk_plan.id=wk_unit.plan_id where 1 and (wk_plan.created_at >= {startDate} or wk_plan.created_at <= {endDate}) and ((wk_plan.user_id = {userId}) or (wk_plan.status = {status} and wk_plan.id in ( select id from wk_unit where id={palnId})) ) order by wk_plan.created_at desc limit {pageNo}, {pageSize}";
+//$split = preg_split('/(\bwhere\b|\bgroup\b|\border\b|\blimit\b)/i', $s, -1,
+//PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE);
+//echo "<pre>";
+//print_r($split);
+//echo "</pre>";
+//$t = preg_split('/(\band\b|\bor\b|\b\(\b)/i', $split[2], -1,
+//PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE);
+//echo "<pre>";
+//print_r($t);
+//echo "</pre>";
+//
+//$params['startDate'] = "2017-07-01";
+//$params['endDate'] = "2017-07-02";
+//$params['pageSize'] = 50;
+//$params['pageNo'] = 1;
 }
