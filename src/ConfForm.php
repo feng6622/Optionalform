@@ -73,8 +73,8 @@ class ConfForm
         $info = json_decode($str, true);
         if (isset($info['sql'])) {
             $chart_sql = $info['sql'];
-            print_r($chart_sql);
-            echo "<pre>";
+//            print_r($chart_sql);
+//            echo "<pre>";
 
             $msg = self::params_validate($info['params'], $params);
             if (count($msg) > 0) {
@@ -127,14 +127,15 @@ class ConfForm
 //            echo "</pre>";
         }
 
-        echo "<pre>";
-        print_r($chart_sql);
-        echo "</pre>";
+//        echo "<pre>";
+//        print_r($chart_sql);
+//        echo "</pre>";
 
-        $data = DB::connection('mysql')->select($chart_sql);
-        echo "<pre>";
-        print_r(adapt_from_db_array($data));
-        echo "</pre>";
+        $data = DB::connection($info['connection'])->select($chart_sql);
+        return $data;
+//        echo "<pre>";
+//        print_r(adapt_from_db_array($data));
+//        echo "</pre>";
 //        return $data;
 
     }
