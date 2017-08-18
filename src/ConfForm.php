@@ -101,9 +101,11 @@ class ConfForm
                             if (strpos($match_v, '{' . $k . '}')) {
                                 $match_v = str_replace(" ", '', $match_v);
                                 if (substr(trim($match_v), 0, 1) != '(') { //第一个字符不是(
+
                                     if (isset($t[$match_k - 1])) {
                                         $t[$match_k] = self::params_not_exist_string($t[$match_k], $t[$match_k - 1]);
                                     } else {
+                                        dd($t);
                                         $t[$match_k] = self::params_not_exist_string($t[$match_k], $t[$match_k + 1]);
                                     }
                                 } else {
